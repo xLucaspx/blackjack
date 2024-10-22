@@ -7,7 +7,7 @@
  * @param hand Cards to be printed.
  * @param points Sum of points corresponding to the cards.
  */
-void printHand(const std::vector<short>& hand, const short& points);
+void printHand(const std::vector<short>& hand, const int& points);
 
 void printGameStart(const std::vector<short>& player, const short& dealer)
 {
@@ -27,7 +27,7 @@ void printDealtCardDealer(const short& drawnCard)
 	std::cout << "The dealer is dealt: " << getCardSymbol(drawnCard);
 }
 
-void printWinner(const short& playerPoints, const short& dealerPoints)
+void printWinner(const int& playerPoints, const int& dealerPoints)
 {
 	std::cout << std::endl;
 	if (playerPoints > 21) {
@@ -45,27 +45,27 @@ void printWinner(const short& playerPoints, const short& dealerPoints)
 }
 
 
-void printPlayerHand(const std::vector<short>& hand, const short& points)
+void printPlayerHand(const std::vector<short>& hand, const int& points)
 {
 	std::cout << std::endl << "Your hand: ";
 	printHand(hand, points);
 }
 
-void printDealerHand(const std::vector<short>& hand, const short& points)
+void printDealerHand(const std::vector<short>& hand, const int& points)
 {
 	std::cout << std::endl << "The dealer has: ";
 	printHand(hand, points);
 }
 
-void revealDealerHand(const std::vector<short>& hand, const short& points)
+void revealDealerHand(const std::vector<short>& hand, const int& points)
 {
 	std::cout << std::endl << "The dealer reveals his hand: ";
 	printHand(hand, points);
 }
 
-void printHand(const std::vector<short>& hand, const short& points)
+void printHand(const std::vector<short>& hand, const int& points)
 {
-	int size = hand.size();
+	size_t size = hand.size();
 
 	for (int i = 0; i < size; i++) {
 		std::cout << getCardSymbol(hand[i]) << (i == size - 1 ? "" : " + ");

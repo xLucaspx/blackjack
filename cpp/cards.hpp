@@ -14,7 +14,7 @@
  * @param cards The cards from which to calculate the points.
  * @return The total points corresponding to the cards.
  */
-short sum(const std::vector<short>& cards);
+int sum(const std::vector<short>& cards);
 
 /**
  * Returns the symbol that corresponds to the value of the card passed as an

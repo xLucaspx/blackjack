@@ -1,8 +1,11 @@
 #include "cards.hpp"
 
-short sum(const std::vector<short>& cards)
+int sum(const std::vector<short>& cards)
 {
-	short total = 0;
+	// The type int is the "natural size" for the target system.
+	// Integer types that are smaller than int are promoted to int in
+	// arithmetic expressions so that the processor can be most efficient.
+	int total = 0;
 	short aceCount = 0;
 	for (short value: cards) {
 		if (value >= 10) {

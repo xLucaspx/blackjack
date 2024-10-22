@@ -59,7 +59,7 @@ void printDealtCardDealer(const short& drawnCard);
  * @param playerPoints The total player points on the round .
  * @param dealerPoints The total dealer points on the round.
  */
-void printWinner(const short& playerPoints, const short& dealerPoints);
+void printWinner(const int& playerPoints, const int& dealerPoints);
 
 /**
  * Prints the state of the game when the cards are first dealt.
@@ -76,7 +76,7 @@ void printGameStart(const std::vector<short>& player, const short& dealer);
  * @param hand The player's cards.
  * @param points The player's total points.
  */
-void printPlayerHand(const std::vector<short>& hand, const short& points);
+void printPlayerHand(const std::vector<short>& hand, const int& points);
 
 /**
  * Prints all the dealer's cards and the sum of his points.
@@ -84,7 +84,7 @@ void printPlayerHand(const std::vector<short>& hand, const short& points);
  * @param hand The dealer's cards.
  * @param points The dealer's total points.
  */
-void printDealerHand(const std::vector<short>& hand, const short& points);
+void printDealerHand(const std::vector<short>& hand, const int& points);
 
 /**
  * Reveals all the dealer's cards and the sum of his points. It's basically the same as
@@ -94,4 +94,4 @@ void printDealerHand(const std::vector<short>& hand, const short& points);
  * @param hand The dealer's cards.
  * @param points The dealer's total points.
  */
-void revealDealerHand(const std::vector<short>& hand, const short& points);
+void revealDealerHand(const std::vector<short>& hand, const int& points);

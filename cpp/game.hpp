@@ -64,7 +64,7 @@ void blackjack(std::map<short, short>& drawnCards, std::vector<short>& player, s
  * @param player     Vector of cards representing the player's hand; will be updated with the cards drawn.
  * @return The player's total points after his turn ends.
  */
-short playerRound(std::map<short, short>& drawnCards, std::vector<short>& player);
+int playerRound(std::map<short, short>& drawnCards, std::vector<short>& player);
 
 /**
  * Computes the dealer's points based on his cards and, while they're lesser than the limit defined in
@@ -76,7 +76,7 @@ short playerRound(std::map<short, short>& drawnCards, std::vector<short>& player
  * @param dealer     Vector of cards representing the dealer's hand; will be updated with the cards drawn.
  * @return The dealer's total points after his turn ends.
  */
-short dealerRound(std::map<short, short>& drawnCards, std::vector<short>& dealer);
+int dealerRound(std::map<short, short>& drawnCards, std::vector<short>& dealer);
 
 /**
  * Clears the structures used to represent the game, without modifying their capacity.

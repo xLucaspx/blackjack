@@ -34,7 +34,7 @@ void blackjack(std::map<short, short>& drawnCards, std::vector<short>& player, s
 	deal(drawnCards, player, dealer);
 	printGameStart(player, dealer[0]);
 
-	short playerPoints = playerRound(drawnCards, player);
+	int playerPoints = playerRound(drawnCards, player);
 
 	if (playerPoints > 21) {
 		printWinner(playerPoints, sum(dealer));
@@ -42,14 +42,14 @@ void blackjack(std::map<short, short>& drawnCards, std::vector<short>& player, s
 		return;
 	}
 
-	short dealerPoints = dealerRound(drawnCards, dealer);
+	int dealerPoints = dealerRound(drawnCards, dealer);
 	printWinner(playerPoints, dealerPoints);
 	resetGame(drawnCards, player, dealer);
 }
 
-short playerRound(std::map<short, short>& drawnCards, std::vector<short>& player)
+int playerRound(std::map<short, short>& drawnCards, std::vector<short>& player)
 {
-	short playerPoints = sum(player);
+	int playerPoints = sum(player);
 	printPlayerHand(player, playerPoints);
 	int op = HIT_OP;
 
@@ -73,9 +73,9 @@ short playerRound(std::map<short, short>& drawnCards, std::vector<short>& player
 	return playerPoints;
 }
 
-short dealerRound(std::map<short, short>& drawnCards, std::vector<short>& dealer)
+int dealerRound(std::map<short, short>& drawnCards, std::vector<short>& dealer)
 {
-	short dealerPoints = sum(dealer);
+	int dealerPoints = sum(dealer);
 	revealDealerHand(dealer, dealerPoints);
 
 	while (dealerPoints < DEALER_LIMIT) {
