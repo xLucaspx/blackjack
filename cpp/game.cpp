@@ -2,7 +2,7 @@
 #include "game.hpp"
 #include "out.hpp"
 
-short drawCard(std::map<short, short>& drawnCards, std::vector<short>& hand)
+short drawCard(std::unordered_map<short, short>& drawnCards, std::vector<short>& hand)
 {
 	// uses a `random_device` once to seed the random number generator (`mt`)
 	std::random_device rd;
@@ -10,15 +10,17 @@ short drawCard(std::map<short, short>& drawnCards, std::vector<short>& hand)
 	std::uniform_int_distribution<short> dist(1, 13);
 	short card = dist(mt);
 
-	while (drawnCards[card] >= 4) {
-		card = dist(mt);
+	if (drawnCards.find(card) != drawnCards.end()) {
+		while (drawnCards.at(card) >= 4) {
+			card = dist(mt);
+		}
 	}
 	drawnCards[card]++;
 	hand.emplace_back(card);
 	return card;
 }
 
-void deal(std::map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer)
+void deal(std::unordered_map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer)
 {
 	for (int i = 0; i < 4; i++) {
 		if (i & 1) {
@@ -29,7 +31,7 @@ void deal(std::map<short, short>& drawnCards, std::vector<short>& player, std::v
 	}
 }
 
-void blackjack(std::map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer)
+void blackjack(std::unordered_map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer)
 {
 	deal(drawnCards, player, dealer);
 	printGameStart(player, dealer[0]);
@@ -47,7 +49,7 @@ void blackjack(std::map<short, short>& drawnCards, std::vector<short>& player, s
 	resetGame(drawnCards, player, dealer);
 }
 
-int playerRound(std::map<short, short>& drawnCards, std::vector<short>& player)
+int playerRound(std::unordered_map<short, short>& drawnCards, std::vector<short>& player)
 {
 	int playerPoints = sum(player);
 	printPlayerHand(player, playerPoints);
@@ -62,7 +64,7 @@ int playerRound(std::map<short, short>& drawnCards, std::vector<short>& player)
 		}
 
 		short card = drawCard(drawnCards, player);
-		printDealtCardPlayer(card);
+		printDrawnCardPlayer(card);
 		playerPoints = sum(player);
 		printPlayerHand(player, playerPoints);
 
@@ -73,14 +75,14 @@ int playerRound(std::map<short, short>& drawnCards, std::vector<short>& player)
 	return playerPoints;
 }
 
-int dealerRound(std::map<short, short>& drawnCards, std::vector<short>& dealer)
+int dealerRound(std::unordered_map<short, short>& drawnCards, std::vector<short>& dealer)
 {
 	int dealerPoints = sum(dealer);
 	revealDealerHand(dealer, dealerPoints);
 
 	while (dealerPoints < DEALER_LIMIT) {
 		short card = drawCard(drawnCards, dealer);
-		printDealtCardDealer(card);
+		printDrawnCardDealer(card);
 		dealerPoints = sum(dealer);
 		printDealerHand(dealer, dealerPoints);
 	}
@@ -88,7 +90,7 @@ int dealerRound(std::map<short, short>& drawnCards, std::vector<short>& dealer)
 	return dealerPoints;
 }
 
-void resetGame(std::map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer)
+void resetGame(std::unordered_map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer)
 {
 	player.clear();
 	dealer.clear();
@@ -97,7 +99,7 @@ void resetGame(std::map<short, short>& drawnCards, std::vector<short>& player, s
 
 void run()
 {
-	std::map<short, short> drawnCards;
+	std::unordered_map<short, short> drawnCards;
 	std::vector<short> playerCards;
 	std::vector<short> dealerCards;
 	playerCards.reserve(MAX_HAND_SIZE);

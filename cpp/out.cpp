@@ -16,12 +16,12 @@ void printGameStart(const std::vector<short>& player, const short& dealer)
 	std::cout << "The dealer reveals: " << getCardSymbol(dealer) << " and a hidden card" << std::endl;
 }
 
-void printDealtCardPlayer(const short& drawnCard)
+void printDrawnCardPlayer(const short& drawnCard)
 {
 	std::cout << std::endl << "The player is dealt: " << getCardSymbol(drawnCard);
 }
 
-void printDealtCardDealer(const short& drawnCard)
+void printDrawnCardDealer(const short& drawnCard)
 {
 	std::cout << std::endl << "The dealer must continue to hit cards..." << std::endl;
 	std::cout << "The dealer is dealt: " << getCardSymbol(drawnCard);
@@ -43,7 +43,6 @@ void printWinner(const int& playerPoints, const int& dealerPoints)
 	}
 	std::cout << std::endl;
 }
-
 
 void printPlayerHand(const std::vector<short>& hand, const int& points)
 {

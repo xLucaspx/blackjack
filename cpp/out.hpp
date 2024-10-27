@@ -43,14 +43,14 @@ inline void printEndMenu()
  *
  * @param drawnCard The value that represents the drawn card.
  */
-void printDealtCardPlayer(const short& drawnCard);
+void printDrawnCardPlayer(const short& drawnCard);
 
 /**
  * Prints a message informing the dealer's drawn card on the round.
  *
  * @param drawnCard The value that represents the drawn card.
  */
-void printDealtCardDealer(const short& drawnCard);
+void printDrawnCardDealer(const short& drawnCard);
 
 /**
  * Computes the winner of the round based on the points passed as arguments

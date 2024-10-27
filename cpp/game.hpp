@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include "cards.hpp"
 
 #define HIT_OP 1
@@ -24,7 +24,7 @@
  *                   be added to this vector.
  * @return The card drawn.
  */
-short drawCard(std::map<short, short>& drawnCards, std::vector<short>& hand);
+short drawCard(std::unordered_map<short, short>& drawnCards, std::vector<short>& hand);
 
 /**
  * Operates the first deal of cards of the game; the player and the dealer receive a total of
@@ -37,7 +37,7 @@ short drawCard(std::map<short, short>& drawnCards, std::vector<short>& hand);
  * @param dealer     Vector of cards representing the dealer's hand; will be updated with the
  *                   cards drawn.
  */
-void deal(std::map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer);
+void deal(std::unordered_map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer);
 
 /**
  * Runs a round of the blackjack game. Calls `deal` to deal the cards, prints the game status and
@@ -52,7 +52,7 @@ void deal(std::map<short, short>& drawnCards, std::vector<short>& player, std::v
  * @param dealer     Vector of cards representing the dealer's hand; it's expected to be empty, and it
  *                   will be cleared at the end of the execution.
  */
-void blackjack(std::map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer);
+void blackjack(std::unordered_map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer);
 
 /**
  * Computes the player's points based on his cards and, while possible, asks if he wants to hit
@@ -64,7 +64,7 @@ void blackjack(std::map<short, short>& drawnCards, std::vector<short>& player, s
  * @param player     Vector of cards representing the player's hand; will be updated with the cards drawn.
  * @return The player's total points after his turn ends.
  */
-int playerRound(std::map<short, short>& drawnCards, std::vector<short>& player);
+int playerRound(std::unordered_map<short, short>& drawnCards, std::vector<short>& player);
 
 /**
  * Computes the dealer's points based on his cards and, while they're lesser than the limit defined in
@@ -76,7 +76,7 @@ int playerRound(std::map<short, short>& drawnCards, std::vector<short>& player);
  * @param dealer     Vector of cards representing the dealer's hand; will be updated with the cards drawn.
  * @return The dealer's total points after his turn ends.
  */
-int dealerRound(std::map<short, short>& drawnCards, std::vector<short>& dealer);
+int dealerRound(std::unordered_map<short, short>& drawnCards, std::vector<short>& dealer);
 
 /**
  * Clears the structures used to represent the game, without modifying their capacity.
@@ -85,7 +85,7 @@ int dealerRound(std::map<short, short>& drawnCards, std::vector<short>& dealer);
  * @param player     Vector of cards representing the player's hand.
  * @param dealer     Vector of cards representing the dealer's hand.
  */
-void resetGame(std::map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer);
+void resetGame(std::unordered_map<short, short>& drawnCards, std::vector<short>& player, std::vector<short>& dealer);
 
 /**
  * Initializes the data structures needed for running the game, reserves memory and calls the
