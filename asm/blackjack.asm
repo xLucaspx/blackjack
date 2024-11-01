@@ -1,7 +1,12 @@
 # ----------------------------------------------------- #
+# PONTIFÍCIA UNIVERSIDADE CATÓLICA DO RIO GRANDE DO SUL #
+#                   ESCOLA POLITÉCNICA                  #
 #         FUNDAMENTOS DE SISTEMAS COMPUTACIONAIS        #
-#                    RISC-V BLACKJACK                   #
-#                LUCAS DA PAZ (xLucaspx)                #
+#               PROF. IACANA IANISKI WEBER              #
+#             TRABALHO II - RISC-V BLACKJACK            #
+#            LUCA WOLFFENBUTTEL BOHNENBERGER            #
+#                 LUCAS DA PAZ OLIVEIRA                 #
+#                  RODRIGO MIOTO SLONGO                 #
 # ----------------------------------------------------- #
 
 # Dados do programa -------------------------------------
@@ -10,7 +15,7 @@ s_Intro:         .string "Bem-vindo ao Blackjack!\n"
 s_PlayerGets:    .string "\nO jogador recebe: "
 s_PlayerHand:    .string "\nSua mão: "
 s_DealerGets:    .string "O dealer recebe: "
-s_DealerHand:    .string "\nO dealer revela sua mão: "
+s_DealerHand:    .string "\n\nO dealer revela sua mão: "
 s_DealerHas:     .string "\nO dealer tem: "
 s_DealerMustHit: .string "\n\nO dealer deve continuar pedindo cartas...\n"
 s_DealerReveals: .string "\nO dealer revela: "
@@ -77,24 +82,24 @@ f_DrawCard:
 
 	li a7 42                         # a7 = 42 (rand int range)
 	li a1 12                         # a1 = 12 (upper bound)
-	p_DrawCard_sort:                 # do ... while (v_DrawnCards[a0] >= t2)
+	f_DrawCard_sort:                 # do ... while (v_DrawnCards[a0] >= t2)
 		ecall                          # a0 = random int [0, bound]
 		slli t3 a0 1                   # t3 = a0 * 2 (to access half word)
 		add t3 t3 t0                   # t3 = &v_DrawnCards[a0]
 		lh t4 0(t3)                    # t4 = v_DrawnCards[a0]
-		bge t4 t2 p_DrawCard_sort      # if (v_DrawnCards[a0] < t2) break
+		bge t4 t2 f_DrawCard_sort      # if (v_DrawnCards[a0] < t2) break
 
 	addi t4 t4 1                     # t4++
 	sh t4 0(t3)                      # v_DrawnCards[a0]++
 	addi a0 a0 1                     # a0++ (so the card is between 1 and 13)
 
 	xor t2 t2 t2                     # t2 = 0
-	p_DrawCard_handIndex:            # while (v_Hand[t2] != 0)
+	f_DrawCard_handIndex:            # while (v_Hand[t2] != 0)
 		slli t3 t2 1                   # t3 = t2 * 2 (to access half word)
 		add t3 t3 t1                   # t3 = &v_Hand
 		lh t4 0(t3)                    # t4 = v_Hand[t2]
 		addi t2 t2 1                   # t2++
-		bgt t4 x0 p_DrawCard_handIndex # if (t4 <= 0) break
+		bgt t4 x0 f_DrawCard_handIndex # if (t4 <= 0) break
 
 	sh a0 0(t3)                      # v_hand[t2] = a0
 	jr ra                            # return a0
@@ -142,6 +147,7 @@ p_Blackjack:
 	add a0 x0 s5                  # a0 = &v_DealerCards
 	jal f_SumPoints               # a0 = sumPoints(v_DealerCards)
 	add s11 x0 a0                 # s11 = dealerPoints
+	jal p_RevealDealerHand        # revealDealerHand(a0)
 	j p_Blackjack_end             # goto p_Blackjack_end
 
 	p_Blackjack_dealer:
@@ -168,16 +174,16 @@ p_PrintGameStart:
 	la a0 s_PlayerGets    # a0 = &s_PlayerGets
 	jal p_PrintString     # printString(a0)
 	lh a0 0(s4)           # a0 = v_PlayerCards[0]
-	jal p_PrintInt        # printInt(a0)
+	jal p_PrintCard       # printCard(a0)
 	la a0 s_And           # a0 = &s_And
 	jal p_PrintString     # printString(a0)
 	lh a0 2(s4)           # a0 = v_PlayerCards[1]
-	jal p_PrintInt        # printInt(a0)
+	jal p_PrintCard       # printCard(a0)
 
 	la a0 s_DealerReveals # a0 = &s_DealerReveals
 	jal p_PrintString     # printString(a0)
 	lh a0 0(s5)           # a0 = v_DealerCards[0]
-	jal p_PrintInt        # printInt(a0)
+	jal p_PrintCard       # printCard(a0)
 	la a0 s_HiddenCard    # a0 = &s_HiddenCard
 	jal p_PrintString     # printString(a0)
 
@@ -316,7 +322,7 @@ p_PrintPlayerHand:
 	add s11 x0 a0      # s11 = points
 
 	la a0 s_PlayerHand # a0 = &s_Player_Hand
-	jal p_PrintString  # print(a0)
+	jal p_PrintString  # printString(a0)
 
 	add a0 x0 s11      # a0 = points
 	add a1 x0 s4       # a1 = &v_PlayerCards
@@ -336,7 +342,7 @@ p_PrintDealerHand:
 	add s11 x0 a0     # s11 = points
 
 	la a0 s_DealerHas # a0 = &s_DealerHas
-	jal p_PrintString # print(a0)
+	jal p_PrintString # printString(a0)
 
 	add a0 x0 s11     # a0 = points
 	add a1 x0 s5      # a1 = &v_DealerCards
@@ -356,7 +362,7 @@ p_RevealDealerHand:
 	add s11 x0 a0      # s11 = points
 
 	la a0 s_DealerHand # a0 = &s_DealerHand
-	jal p_PrintString  # print(a0)
+	jal p_PrintString  # printString(a0)
 
 	add a0 x0 s11      # a0 = points
 	add a1 x0 s5       # a1 = &v_DealerCards
@@ -422,28 +428,28 @@ p_PrintWinner:
 		la a0 s_PlayerBurst               # a0 = &s_PlayerBurst
 		jal p_PrintString                 # printString(a0)
 		j p_PrintWinner_halt              # goto p_PrintWinner_halt
-  p_PrintWinner_dealerBurst:
-  	la a0 s_DealerBurst               # a0 = &s_DealerBurst
-  	jal p_PrintString                 # printString(a0)
-  	j p_PrintWinner_halt              # goto p_PrintWinner_halt
-  p_PrintWinner_player:
-  	add t0 x0 a0                      # t0 = playerPoints
-  	la a0 s_PlayerWins                # a0 = &s_PlayerWins
-  	jal p_PrintString                 # printString(a0)
-  	add a0 x0 t0                      # a0 = playerPoints
-  	j p_PrintWinner_points            # goto p_PrintWinner_points
-  p_PrintWinner_dealer:
-  	la a0 s_DealerWins                # a0 = &s_DealerWins
-  	jal p_PrintString                 # printString(a0)
-  	add a0 x0 a1                      # a0 = dealerPoints
-  p_PrintWinner_points:
-  	jal p_PrintInt                    # printInt(a0) (points)
-  	la a0 s_Points                    # a0 = &s_Points
-  	jal p_PrintString                 # printString(a0)
-  p_PrintWinner_halt:
-  	lw ra 0(sp)                       # retrieves ra
-  	addi sp sp 4                      # restores stack
-  jr ra                               # return
+	p_PrintWinner_dealerBurst:
+		la a0 s_DealerBurst               # a0 = &s_DealerBurst
+		jal p_PrintString                 # printString(a0)
+		j p_PrintWinner_halt              # goto p_PrintWinner_halt
+	p_PrintWinner_player:
+		add t0 x0 a0                      # t0 = playerPoints
+		la a0 s_PlayerWins                # a0 = &s_PlayerWins
+		jal p_PrintString                 # printString(a0)
+		add a0 x0 t0                      # a0 = playerPoints
+		j p_PrintWinner_points            # goto p_PrintWinner_points
+	p_PrintWinner_dealer:
+		la a0 s_DealerWins                # a0 = &s_DealerWins
+		jal p_PrintString                 # printString(a0)
+		add a0 x0 a1                      # a0 = dealerPoints
+	p_PrintWinner_points:
+		jal p_PrintInt                    # printInt(a0) (points)
+		la a0 s_Points                    # a0 = &s_Points
+		jal p_PrintString                 # printString(a0)
+	p_PrintWinner_halt:
+		lw ra 0(sp)                       # retrieves ra
+		addi sp sp 4                      # restores stack
+	jr ra                               # return
 
 # short sumPoints(v_Hand &a0) ---------------------------
 f_SumPoints:
@@ -544,7 +550,6 @@ p_PrintEndMenu:
 	addi sp sp 4      # restores stack
 	jr ra             # return
 
-
 # void printCard(const card &a0) -----------------------
 p_PrintCard:
 	addi sp sp -4     # stack management
@@ -571,12 +576,12 @@ p_PrintCard:
 		j p_PrintCard_halt
 	p_PrintCard_J:            # case J
 		la a0 v_CardSymbols     # a0 = &v_CardSymbols[J]
-  	jal p_PrintString       # printString(a0)
-  	j p_PrintCard_halt
+		jal p_PrintString       # printString(a0)
+		j p_PrintCard_halt
 	p_PrintCard_Q:            # case Q
 		la a0 v_CardSymbols     # a0 = &v_CardSymbols
 		addi a0 a0 2            # a0 = &v_CardSymbols[Q]
-  	jal p_PrintString       # printString(a0)
+		jal p_PrintString       # printString(a0)
 	p_PrintCard_halt:
 		lw ra 0(sp)             # retrieves ra
 		addi sp sp 4            # restores stack

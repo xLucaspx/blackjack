@@ -39,7 +39,9 @@ void blackjack(std::unordered_map<short, short>& drawnCards, std::vector<short>&
 	int playerPoints = playerRound(drawnCards, player);
 
 	if (playerPoints > 21) {
-		printWinner(playerPoints, sum(dealer));
+		int dealerPoints = sum(dealer);
+		revealDealerHand(dealer, dealerPoints);
+		printWinner(playerPoints, dealerPoints);
 		resetGame(drawnCards, player, dealer);
 		return;
 	}
